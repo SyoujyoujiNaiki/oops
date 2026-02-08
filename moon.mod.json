@@ -4,6 +4,10 @@
   "readme": "README.mbt.md",
   "repository": "",
   "license": "Apache-2.0",
-  "keywords": [],
-  "description": ""
+  "keywords": [
+    "type-casting",
+    "any",
+    "object"
+  ],
+  "description": "Oops, write your any script!"
 }
