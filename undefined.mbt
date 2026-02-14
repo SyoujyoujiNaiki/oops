@@ -1,5 +1,13 @@
 ///|
-pub(all) struct Undefined {}
+pub(all) struct Undefined {
+
+  fn new() -> Undefined
+}
+
+///|
+pub fn Undefined::new() -> Undefined {
+  Undefined::{  }
+}
 
 ///|
 pub impl Any for Undefined with __type__(_) {

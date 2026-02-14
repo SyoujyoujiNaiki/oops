@@ -1,5 +1,13 @@
 ///|
-pub(all) struct Null {}
+pub(all) struct Null {
+
+  fn new() -> Null
+}
+
+///|
+pub fn Null::new() -> Null {
+  Null::{  }
+}
 
 ///|
 /// Implement Any trait for type Null.

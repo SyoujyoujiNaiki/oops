@@ -112,3 +112,8 @@ pub impl Any for Obj with __data__(self) {
   }
   buf.contents()
 }
+
+///|
+pub impl Any for Obj with __str__(_) {
+  "[object Object]"
+}

@@ -10,7 +10,7 @@ test "[]+[]" {
   let t = (a as Any) + a
   println("> ([] as Any)+[]")
   inspect(t, content="")
-  println("\"\"")
+  println("< \"\"")
 }
 
 ///|
@@ -32,7 +32,7 @@ test "true-true" {
 ///|
 test "true==1" {
   let t = (true as Any) == 1
-  println("> true==1")
+  println("> (true as Any) == 1")
   inspect(t, content="true")
   println("< true")
 }
