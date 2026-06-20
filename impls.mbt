@@ -34,6 +34,11 @@ pub impl Any for Double with fn layer(self) {
 }
 
 ///|
+pub impl Any for BigInt with fn layer(self) {
+  Integer(self)
+}
+
+///|
 pub impl Any for Char with fn layer(self) {
   Chars(self.to_string())
 }
@@ -1543,6 +1548,346 @@ pub impl Any for Double with fn __repr__(self) {
 }
 
 ///|
+pub impl Any for Float with fn __add__(self, other) {
+  match other.layer() {
+    Boolean(o) => {
+      let o_f : Double = if o { 1.0 } else { 0.0 }
+      (self.to_double() + o_f) as &Any
+    }
+    Scalar8(o) => self.to_double() + o.to_int().to_double()
+    Scalar16(o) => self.to_double() + o.to_int().to_double()
+    Scalar32(o) => self.to_double() + o.to_double()
+    Scalar64(o) => self.to_double() + o.to_double()
+    Number(o) => self.to_double() + o
+    Chars(o) => self.to_string() + o
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for Float with fn __sub__(self, other) {
+  match other.layer() {
+    Boolean(o) => {
+      let o_f : Double = if o { 1.0 } else { 0.0 }
+      (self.to_double() - o_f) as &Any
+    }
+    Scalar8(o) => self.to_double() - o.to_int().to_double()
+    Scalar16(o) => self.to_double() - o.to_int().to_double()
+    Scalar32(o) => self.to_double() - o.to_double()
+    Scalar64(o) => self.to_double() - o.to_double()
+    Number(o) => self.to_double() - o
+    Chars(o) =>
+      try @string.parse_double(o) catch {
+        _ => @double.not_a_number
+      } noraise {
+        o_num => self.to_double() - o_num
+      }
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for Float with fn __mul__(self, other) {
+  match other.layer() {
+    Boolean(o) => {
+      let o_f : Double = if o { 1.0 } else { 0.0 }
+      (self.to_double() * o_f) as &Any
+    }
+    Scalar8(o) => self.to_double() * o.to_int().to_double()
+    Scalar16(o) => self.to_double() * o.to_int().to_double()
+    Scalar32(o) => self.to_double() * o.to_double()
+    Scalar64(o) => self.to_double() * o.to_double()
+    Number(o) => self.to_double() * o
+    Chars(o) =>
+      try @string.parse_double(o) catch {
+        _ => @double.not_a_number
+      } noraise {
+        o_num => self.to_double() * o_num
+      }
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for Float with fn __div__(self, other) {
+  match other.layer() {
+    Boolean(o) => {
+      let o_f : Double = if o { 1.0 } else { 0.0 }
+      (self.to_double() / o_f) as &Any
+    }
+    Scalar8(o) => self.to_double() / o.to_int().to_double()
+    Scalar16(o) => self.to_double() / o.to_int().to_double()
+    Scalar32(o) => self.to_double() / o.to_double()
+    Scalar64(o) => self.to_double() / o.to_double()
+    Number(o) => self.to_double() / o
+    Chars(o) =>
+      try @string.parse_double(o) catch {
+        _ => @double.not_a_number
+      } noraise {
+        o_num => self.to_double() / o_num
+      }
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for Float with fn __mod__(self, other) {
+  match other.layer() {
+    Boolean(o) => {
+      let o_f : Double = if o { 1.0 } else { 0.0 }
+      (self.to_double() % o_f) as &Any
+    }
+    Scalar8(o) => self.to_double() % o.to_int().to_double()
+    Scalar16(o) => self.to_double() % o.to_int().to_double()
+    Scalar32(o) => self.to_double() % o.to_double()
+    Scalar64(o) => self.to_double() % o.to_double()
+    Number(o) => self.to_double() % o
+    Chars(o) =>
+      try @string.parse_double(o) catch {
+        _ => @double.not_a_number
+      } noraise {
+        o_num => self.to_double() % o_num
+      }
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for Float with fn __eq__(self, other) {
+  match other.layer() {
+    Boolean(o) => {
+      let o_f : Double = if o { 1.0 } else { 0.0 }
+      self.to_double() == o_f
+    }
+    Scalar8(o) => self.to_double() == o.to_int().to_double()
+    Scalar16(o) => self.to_double() == o.to_int().to_double()
+    Scalar32(o) => self.to_double() == o.to_double()
+    Scalar64(o) => self.to_double() == o.to_double()
+    Number(o) => self.to_double() == o
+    Chars(o) =>
+      try @string.parse_double(o) catch {
+        _ => false
+      } noraise {
+        o_num => self.to_double() == o_num
+      }
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for Float with fn __compare__(self, other) {
+  match other.layer() {
+    Boolean(o) => {
+      let o_f : Double = if o { 1.0 } else { 0.0 }
+      self.to_double().compare(o_f)
+    }
+    Scalar8(o) => self.to_double().compare(o.to_int().to_double())
+    Scalar16(o) => self.to_double().compare(o.to_int().to_double())
+    Scalar32(o) => self.to_double().compare(o.to_double())
+    Scalar64(o) => self.to_double().compare(o.to_double())
+    Number(o) => self.to_double().compare(o)
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for Float with fn __ge__(self, other) {
+  match other.layer() {
+    Boolean(o) => {
+      let o_f : Double = if o { 1.0 } else { 0.0 }
+      self.to_double() >= o_f
+    }
+    Scalar8(o) => self.to_double() >= o.to_int().to_double()
+    Scalar16(o) => self.to_double() >= o.to_int().to_double()
+    Scalar32(o) => self.to_double() >= o.to_double()
+    Scalar64(o) => self.to_double() >= o.to_double()
+    Number(o) => self.to_double() >= o
+    Chars(o) =>
+      try @string.parse_double(o) catch {
+        _ => false
+      } noraise {
+        o_num => self.to_double() >= o_num
+      }
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for Float with fn __gt__(self, other) {
+  match other.layer() {
+    Boolean(o) => {
+      let o_f : Double = if o { 1.0 } else { 0.0 }
+      self.to_double() > o_f
+    }
+    Scalar8(o) => self.to_double() > o.to_int().to_double()
+    Scalar16(o) => self.to_double() > o.to_int().to_double()
+    Scalar32(o) => self.to_double() > o.to_double()
+    Scalar64(o) => self.to_double() > o.to_double()
+    Number(o) => self.to_double() > o
+    Chars(o) =>
+      try @string.parse_double(o) catch {
+        _ => false
+      } noraise {
+        o_num => self.to_double() > o_num
+      }
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for Float with fn __le__(self, other) {
+  match other.layer() {
+    Boolean(o) => {
+      let o_f : Double = if o { 1.0 } else { 0.0 }
+      self.to_double() <= o_f
+    }
+    Scalar8(o) => self.to_double() <= o.to_int().to_double()
+    Scalar16(o) => self.to_double() <= o.to_int().to_double()
+    Scalar32(o) => self.to_double() <= o.to_double()
+    Scalar64(o) => self.to_double() <= o.to_double()
+    Number(o) => self.to_double() <= o
+    Chars(o) =>
+      try @string.parse_double(o) catch {
+        _ => false
+      } noraise {
+        o_num => self.to_double() <= o_num
+      }
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for Float with fn __lt__(self, other) {
+  match other.layer() {
+    Boolean(o) => {
+      let o_f : Double = if o { 1.0 } else { 0.0 }
+      self.to_double() < o_f
+    }
+    Scalar8(o) => self.to_double() < o.to_int().to_double()
+    Scalar16(o) => self.to_double() < o.to_int().to_double()
+    Scalar32(o) => self.to_double() < o.to_double()
+    Scalar64(o) => self.to_double() < o.to_double()
+    Number(o) => self.to_double() < o
+    Chars(o) =>
+      try @string.parse_double(o) catch {
+        _ => false
+      } noraise {
+        o_num => self.to_double() < o_num
+      }
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for Float with fn __neg__(self) {
+  -self.to_double()
+}
+
+///|
+pub impl Any for Float with fn __repr__(self) {
+  self.to_string()
+}
+
+///|
+pub impl Any for BigInt with fn __add__(self, other) {
+  match other.layer() {
+    Integer(o) => (self + o) as &Any
+    Chars(o) => self.to_string() + o
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for BigInt with fn __sub__(self, other) {
+  match other.layer() {
+    Integer(o) => self - o
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for BigInt with fn __mul__(self, other) {
+  match other.layer() {
+    Integer(o) => self * o
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for BigInt with fn __div__(self, other) {
+  match other.layer() {
+    Integer(o) => self / o
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for BigInt with fn __mod__(self, other) {
+  match other.layer() {
+    Integer(o) => self % o
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for BigInt with fn __eq__(self, other) {
+  match other.layer() {
+    Integer(o) => self == o
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for BigInt with fn __compare__(self, other) {
+  match other.layer() {
+    Integer(o) => self.compare(o)
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for BigInt with fn __ge__(self, other) {
+  match other.layer() {
+    Integer(o) => self >= o
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for BigInt with fn __gt__(self, other) {
+  match other.layer() {
+    Integer(o) => self > o
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for BigInt with fn __le__(self, other) {
+  match other.layer() {
+    Integer(o) => self <= o
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for BigInt with fn __lt__(self, other) {
+  match other.layer() {
+    Integer(o) => self < o
+    _ => raise NoImpl
+  }
+}
+
+///|
+pub impl Any for BigInt with fn __neg__(self) {
+  -self
+}
+
+///|
+pub impl Any for BigInt with fn __repr__(self) {
+  self.to_string()
+}
+
+///|
 pub impl Any for Char with fn __add__(self, other) {
   match other.layer() {
     Boolean(o) => (self.to_string() + o.to_string()) as &Any
@@ -1551,6 +1896,7 @@ pub impl Any for Char with fn __add__(self, other) {
     Scalar32(o) => self.to_string() + o.to_string()
     Scalar64(o) => self.to_string() + o.to_string()
     Number(o) => self.to_string() + o.to_string()
+    Integer(o) => self.to_string() + o.to_string()
     Chars(o) => self.to_string() + o
     Data(o) => {
       let buf = @buffer.Buffer()
@@ -1988,6 +2334,7 @@ pub impl Any for String with fn __add__(self, other) {
     Scalar32(o) => self + o.to_string()
     Scalar64(o) => self + o.to_string()
     Number(o) => self + o.to_string()
+    Integer(o) => self + o.to_string()
     Chars(o) => self + o
     Data(o) => {
       let buf = @buffer.Buffer()

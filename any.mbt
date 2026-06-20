@@ -249,6 +249,7 @@ pub extenum AnyLayer {
   Scalar32(Int)
   Scalar64(Int64)
   Number(Double)
+  Integer(BigInt)
   Chars(String)
   Data(Bytes)
   None
