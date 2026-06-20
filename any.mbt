@@ -4,6 +4,7 @@ suberror NoImpl
 ///|
 pub(open) trait Any {
   fn layer(Self) -> AnyLayer
+  fn __repr__(Self) -> String raise NoImpl = _
   fn __add__(Self, &Any) -> &Any raise NoImpl = _
   fn __sub__(Self, &Any) -> &Any raise NoImpl = _
   fn __mul__(Self, &Any) -> &Any raise NoImpl = _
@@ -20,6 +21,12 @@ pub(open) trait Any {
   fn __gt__(Self, &Any) -> Bool raise NoImpl = _
   fn __le__(Self, &Any) -> Bool raise NoImpl = _
   fn __lt__(Self, &Any) -> Bool raise NoImpl = _
+  fn __req__(Self, &Any) -> Bool raise NoImpl = _
+  fn __rcompare__(Self, &Any) -> Int raise NoImpl = _
+  fn __rge__(Self, &Any) -> Bool raise NoImpl = _
+  fn __rgt__(Self, &Any) -> Bool raise NoImpl = _
+  fn __rle__(Self, &Any) -> Bool raise NoImpl = _
+  fn __rlt__(Self, &Any) -> Bool raise NoImpl = _
   fn __neg__(Self) -> &Any raise NoImpl = _
 }
 
@@ -104,111 +111,133 @@ impl Any with fn __eq__(_, _) {
 }
 
 ///|
+impl Any with fn __req__(_, _) {
+  raise NoImpl
+}
+
+///|
+impl Any with fn __rcompare__(_, _) {
+  raise NoImpl
+}
+
+///|
+impl Any with fn __rge__(_, _) {
+  raise NoImpl
+}
+
+///|
+impl Any with fn __rgt__(_, _) {
+  raise NoImpl
+}
+
+///|
+impl Any with fn __rle__(_, _) {
+  raise NoImpl
+}
+
+///|
+impl Any with fn __rlt__(_, _) {
+  raise NoImpl
+}
+
+///|
 impl Any with fn __neg__(_) {
   raise NoImpl
 }
 
 ///|
-impl Add for &Any with fn add(self, other) {
+impl Any with fn __repr__(_) {
+  raise NoImpl
+}
+
+///|
+pub impl Add for &Any with fn add(self, other) {
   self.__add__(other) catch {
     _ => other.__radd__(self) catch { _ => abort("No Implement!") }
   }
 }
 
 ///|
-impl Sub for &Any with fn sub(self, other) {
+pub impl Sub for &Any with fn sub(self, other) {
   self.__sub__(other) catch {
     _ => other.__rsub__(self) catch { _ => abort("No Implement!") }
   }
 }
 
 ///|
-impl Mul for &Any with fn mul(self, other) {
+pub impl Mul for &Any with fn mul(self, other) {
   self.__mul__(other) catch {
     _ => other.__rmul__(self) catch { _ => abort("No Implement!") }
   }
 }
 
 ///|
-impl Div for &Any with fn div(self, other) {
+pub impl Div for &Any with fn div(self, other) {
   self.__div__(other) catch {
     _ => other.__rdiv__(self) catch { _ => abort("No Implement!") }
   }
 }
 
 ///|
-impl Mod for &Any with fn mod(self, other) {
+pub impl Mod for &Any with fn mod(self, other) {
   self.__mod__(other) catch {
     _ => other.__rmod__(self) catch { _ => abort("No Implement!") }
   }
 }
 
 ///|
-impl Eq for &Any with fn equal(self, other) {
+pub impl Eq for &Any with fn equal(self, other) {
   self.__eq__(other) catch {
     _ => abort("No Implement!")
   }
 }
 
 ///|
-impl Neg for &Any with fn neg(self) {
+pub impl Neg for &Any with fn neg(self) {
   self.__neg__() catch {
     _ => abort("No Implement!")
   }
 }
 
 ///|
-impl Compare for &Any with fn compare(self, other) {
+pub impl Compare for &Any with fn compare(self, other) {
   self.__compare__(other) catch {
-    _ => abort("No Implement!")
+    _ => other.__rcompare__(self) catch { _ => abort("No Implement!") }
   }
 }
 
 ///|
-impl Compare for &Any with fn op_ge(self, other) {
+pub impl Compare for &Any with fn op_ge(self, other) {
   self.__ge__(other) catch {
-    _ =>
-      try self.__compare__(other) catch {
-        _ => abort("No Implement!")
-      } noraise {
-        r => r.is_non_neg()
-      }
+    _ => other.__rge__(self) catch { _ => abort("No Implement!") }
   }
 }
 
 ///|
-impl Compare for &Any with fn op_gt(self, other) {
+pub impl Compare for &Any with fn op_gt(self, other) {
   self.__gt__(other) catch {
-    _ =>
-      try self.__compare__(other) catch {
-        _ => abort("No Implement!")
-      } noraise {
-        r => r.is_pos()
-      }
+    _ => other.__rgt__(self) catch { _ => abort("No Implement!") }
   }
 }
 
 ///|
-impl Compare for &Any with fn op_le(self, other) {
+pub impl Compare for &Any with fn op_le(self, other) {
   self.__le__(other) catch {
-    _ =>
-      try self.__compare__(other) catch {
-        _ => abort("No Implement!")
-      } noraise {
-        r => r.is_non_pos()
-      }
+    _ => other.__rle__(self) catch { _ => abort("No Implement!") }
   }
 }
 
 ///|
-impl Compare for &Any with fn op_lt(self, other) {
+pub impl Compare for &Any with fn op_lt(self, other) {
   self.__lt__(other) catch {
-    _ =>
-      try self.__compare__(other) catch {
-        _ => abort("No Implement!")
-      } noraise {
-        r => r.is_neg()
-      }
+    _ => other.__rlt__(self) catch { _ => abort("No Implement!") }
+  }
+}
+
+///|
+pub impl Show for &Any with fn to_string(self) {
+  self.__repr__() catch {
+    _ => abort("No Implement!")
   }
 }
 
