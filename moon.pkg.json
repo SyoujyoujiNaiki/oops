@@ -1,8 +1,0 @@
-{
-    "import": [
-        {"path": "moonbitlang/core/buffer"},
-        {"path": "moonbitlang/core/double"},
-        {"path": "moonbitlang/core/encoding/utf16", "alias": "utf16"},
-        {"path": "moonbitlang/core/strconv"}
-    ]
-}

@@ -1,8 +1,0 @@
-{
-    "test-import": [
-      "moonbitlang/core/buffer",
-      "moonbitlang/core/double",
-      "moonbitlang/core/strconv",
-      "SyoujyoujiNaiki/oops"
-    ]
-}
